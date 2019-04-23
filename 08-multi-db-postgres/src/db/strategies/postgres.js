@@ -16,6 +16,19 @@ class PostgresDB extends ICrud{
     return dataValues
   }
 
+  async read(item = {}){
+    return this._herois.findAll({where: item, raw: true})
+  }
+
+  async update(id, item){
+    return this._herois.update(item, {where: {id: id}})
+  }
+
+  async delete(id){
+    const query = id ? { id } : {}
+    return this._herois.destroy({where: query})
+  }
+
   async isConnected(){
     
     try {
@@ -31,8 +44,8 @@ class PostgresDB extends ICrud{
   async connect(){
     this._driver = new Sequelize(
       'heroes',
-      'mjunior',
-      'mjunior',
+      'root',
+      'root',
       {
         host: 'localhost',
         dialect: 'postgres',

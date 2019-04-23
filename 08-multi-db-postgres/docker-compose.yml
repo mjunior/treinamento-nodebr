@@ -5,11 +5,22 @@ services:
     ports: 
       - "5432:5432"
     environment: 
-      POSTGRES_USER: "mjunior"
-      POSTGRES_PASSWORD: "mjunior"
+      POSTGRES_USER: "root"
+      POSTGRES_PASSWORD: "root"
       POSTGRES_DB: "heroes"
     networks:
       - pgnet
+
+  mongodb:
+    image: mongo:4
+    ports: 
+      - "27017:27017"
+    environment: 
+      MONGO_INITDB_ROOT_USERNAME: "root"
+      MONGO_INITDB_ROOT_PASSWORD: "root"
+      MONGO_INITDB_DATABASE: "heroes"
+    networks:
+      - mongonet
     
   adminer:
     image: adminer
@@ -20,28 +31,18 @@ services:
     networks:
       - pgnet
 
-  mongo:
-    image: mongo
-    ports: 
-      - "27017:27017"
-    environment: 
-      MONGO_INITDB_ROOT_USERNAME: "root"
-      MONGO_INITDB_ROOT_PASSWORD: "root"
-      MONGO_INITDB_DATABASE: "heroes"
-    networks:
-      - mongonet
-
   mongoclient:
     image: mongoclient/mongoclient
     ports: 
-      - "8081:3000"
+      - "3000:3000"
     depends_on: 
-      - mongo
+      - mongodb
     environment:
       STARTUP_DELAY: 10
+      MONGO_URL: "mongodb://root:root@mongodb:27017/admin"
     networks:
       - mongonet
-      
+
 networks:
   pgnet:
   mongonet:

@@ -12,7 +12,7 @@ class ContextStrategy{
     return this._database.read(item)
   }
 
-  read(id, item){
+  update(id, item){
     return this._database.update(id, item)
   }
 
